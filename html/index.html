@@ -5,38 +5,5 @@
 </head>
 <body>
     <h1>Datos en Tiempo Real</h1>
-    <div id="real-time-data"></div>
-
-    <script>
-        // Establecer la conexión WebSocket al servidor remoto
-        const socket = new WebSocket("wss://server.domain.com:puerto_servidor_websocket");
-
-        // Manejar la recepción de mensajes
-        socket.onmessage = function(event) {
-            const data = event.data;
-            // Mostrar los datos recibidos en la página
-            document.getElementById("real-time-data").innerHTML += `<p>${data}</p>`;
-        };
-
-        // Manejar errores
-        socket.onerror = function(event) {
-            console.error("Error de WebSocket: ", event);
-        };
-
-        // Manejar la conexión cerrada
-        socket.onclose = function(event) {
-            if (event.wasClean) {
-                console.log("Conexión WebSocket cerrada limpiamente, código=" + event.code + " razón=" + event.reason);
-            } else {
-                console.error("Conexión WebSocket rota");
-            }
-        };
-
-        // Enviar datos al servidor (si es necesario)
-        function enviarDatosAlServidor() {
-            const datosAEnviar = "Datos que quieres enviar al servidor";
-            socket.send(datosAEnviar);
-        }
-    </script>
 </body>
 </html>
