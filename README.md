@@ -6,7 +6,7 @@ Para la central los requerimientos son los siguientes:
 - [x]  Login con codigo uninorte (creación de usuario)
 - [ ]  Visualizacion de tiempos en tiempo real
 - [ ]  Base de datos online provisional
-- [ ]  Generar xslx con los datos por práctica
+- [x]  Generar xslx con los datos por práctica
 
 El programa será capaz de mostrar la siguiente información:
 
