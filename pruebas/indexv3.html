@@ -11,12 +11,10 @@
     <script>
         const socket = io.connect('http://localhost:3000');
 
-        let contador = 0; // Inicializar el contador en 0
-
         socket.on('datos', (data) => {
-            contador++; // Incrementar el contador en 1 cada vez que llega un dato
             const contadorElement = document.getElementById('contador');
-            contadorElement.textContent = contador;
+            const contador = parseFloat(contadorElement.textContent);
+            contadorElement.textContent = contador + data;
         });
     </script>
 </body>
