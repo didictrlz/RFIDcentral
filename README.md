@@ -7,6 +7,12 @@ Para la central los requerimientos son los siguientes:
 - [ ]  Visualizacion de tiempos en tiempo real
 - [ ]  Base de datos online provisional
 - [x]  Generar xslx con los datos por práctica
+- [ ]  Crear pestañas para cada mesa de trabajo
+- [ ]  Definir frontend
+- [ ]  Crear frontend
+- [ ]  Crear main
+- [ ]  Interconexion con switch
+- [ ]  
 
 El programa será capaz de mostrar la siguiente información:
 
