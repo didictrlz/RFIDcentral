@@ -1,71 +1,71 @@
 const http = require('http');
+const express = require('express');
+const path = require('path');
+const socketIO = require('socket.io');
 const fs = require('fs');
-const readline = require('readline');
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csv = require('csv-parser');
 
-const server = http.createServer((req, res) => {
-    if (req.url === '/') {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
-        const html = fs.readFileSync('index.html', 'utf8');
-        res.end(html);
-    }
-}); 
+const EsCsvFilePath = path.join(__dirname, 'datosEstaciones.csv');
 
-server.listen(3000, () => {
-    console.log('Servidor web en ejecución en http://localhost:3000');
+// Ruta al archivo CSV
+const csvFilePath = path.join(__dirname, 'datos.csv');
+
+function leerDatosDesdeCSV() {
+    const datos = [];
+
+    fs.createReadStream(csvFilePath)
+        .pipe(csv())
+        .on('data', (row) => {
+            datos.push(row.dato);
+        })
+        .on('end', () => {
+            io.emit('datosDesdeCSV', datos); // Emitir datos a todos los clientes
+        });
+}
+
+// Lectura periódica de los datos del archivo CSV cada 2 segundos (ajusta según necesites)
+setInterval(() => {
+    leerDatosDesdeCSV();
+}, 2000);
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const popupPort = 3001;
-const io = require('socket.io')(server);
-
-// Configuración para escribir en el archivo CSV
-const csvWriter = createCsvWriter({
-    path: 'datos.csv',
-    header: [
-        { id: 'dato', title: 'Dato' }
-    ],
-    append: true
-});
-
-let dataCount = 0; // Contador de datos
 
 io.on('connection', (socket) => {
     console.log('Cliente conectado');
 
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    function solicitarDatos() {
-        rl.question('Ingresa datos (número) o "exit" para desconectar: ', (data) => {
-            if (data.toLowerCase() === 'exit') {
-                console.log('Desconectando...');
-                socket.disconnect();
-            } else {
-                const parsedData = parseFloat(data);
-                if (!isNaN(parsedData)) {
-                    console.log(`Datos ingresados: ${parsedData}`);
-                    socket.emit('datos', parsedData);
-
-                    // Guardar el dato en el archivo CSV
-                    csvWriter.writeRecords([{ dato: parsedData }])
-                        .then(() => console.log('Dato guardado en el archivo CSV'));
-
-                    dataCount++; // Incrementar el contador de datos
-                    console.log(`Cantidad de datos: ${dataCount}`);
-                }
-                solicitarDatos();
+    socket.on('datosEstaciones', (datos) => {
+        if (datos && Array.isArray(datos) && datos.length === 4) {
+            // Leer datos actuales del archivo CSV si existe
+            let data = [];
+            if (fs.existsSync(EsCsvFilePath)) {
+                const fileContent = fs.readFileSync(EsCsvFilePath, 'utf-8');
+                data = fileContent.split('\n').map(line => line.split(',').map(item => item.trim()));
             }
-        });
-    }
 
-    solicitarDatos();
+            // Agregar nuevos datos como una nueva fila al archivo CSV
+            data.push(datos);
+
+            // Construir el nuevo contenido del archivo CSV
+            const newData = data.map(row => row.join(',')).join('\n');
+            fs.writeFileSync(EsCsvFilePath, newData);
+
+            console.log('Datos almacenados correctamente en el nuevo archivo CSV.');
+        }
+    });
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');
-        rl.close();
     });
+});
+
+server.listen(3000, () => {
+    console.log('Servidor web en ejecución en http://localhost:3000');
 });
 
