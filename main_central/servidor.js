@@ -40,24 +40,16 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('Cliente conectado');
 
-    socket.on('datosEstaciones', (datos) => {
-        if (datos && Array.isArray(datos) && datos.length === 4) {
-            // Leer datos actuales del archivo CSV si existe
-            let data = [];
-            if (fs.existsSync(EsCsvFilePath)) {
-                const fileContent = fs.readFileSync(EsCsvFilePath, 'utf-8');
-                data = fileContent.split('\n').map(line => line.split(',').map(item => item.trim()));
+    socket.on('datosEstaciones', (dato1, dato2, dato3, dato4) => {
+        const nuevaFila = `${dato1},${dato2},${dato3},${dato4}\n`;
+    
+        fs.appendFile(EsCsvFilePath, nuevaFila, (err) => {
+            if (err) {
+                console.error('Error al escribir en el archivo CSV:', err);
+            } else {
+                console.log('Datos almacenados correctamente en el archivo CSV.');
             }
-
-            // Agregar nuevos datos como una nueva fila al archivo CSV
-            data.push(datos);
-
-            // Construir el nuevo contenido del archivo CSV
-            const newData = data.map(row => row.join(',')).join('\n');
-            fs.writeFileSync(EsCsvFilePath, newData);
-
-            console.log('Datos almacenados correctamente en el nuevo archivo CSV.');
-        }
+        });
     });
 
     socket.on('disconnect', () => {
@@ -68,4 +60,3 @@ io.on('connection', (socket) => {
 server.listen(3000, () => {
     console.log('Servidor web en ejecución en http://localhost:3000');
 });
-
