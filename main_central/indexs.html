@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Central de visualización RFID</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Central de visualización para sistema RFID</h1>
+
+    <h2>Contador de Datos</h2>
+    <p>Cantidad de Datos: <span id="contador">0</span></p>
+    <h2>Ingresar datos</h2>
+    <form id="formDatos">
+        <label for="dato1">Nombre del Operario:</label>
+        <input type="text" name="dato1" id="dato1"><br>
+
+        <label for="dato2">Codigo estudiantil:</label>
+        <input type="text" name="dato2" id="dato2"><br>
+
+        <label for="dato3">Tiempo de trabajo:</label>
+        <input type="text" name="dato3" id="dato3"><br>
+
+        <label for="dato4">Camtidad de kit armados:</label>
+        <input type="text" name="dato4" id="dato4"><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <!-- Conectar con index el servidor -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+    const socket = io.connect('http://localhost:3000');
+
+    //Contador de datos
+    let contador = 0;
+    socket.on('datosDesdeCSV', (data) => {
+        contador = data.length; // Actualizar el contador con la longitud de los datos
+        const contadorElement = document.getElementById('contador');
+        contadorElement.textContent = contador;
+    });
+    </script>
+
+    // Datos de estaciones
+    <script>
+
+        document.getElementById('formDatos').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const dato1 = document.getElementById('dato1').value.trim();
+            const dato2 = document.getElementById('dato2').value.trim();
+            const dato3 = document.getElementById('dato3').value.trim();
+            const dato4 = document.getElementById('dato4').value.trim();
+
+            const datos = [dato1, dato2, dato3, dato4];
+            socket.emit('nuevosDatos', datos);
+
+            document.getElementById('dato1').value = '';
+            document.getElementById('dato2').value = '';
+            document.getElementById('dato3').value = '';
+            document.getElementById('dato4').value = '';
+        });
+
+    </script>
+</body>
+</html>
