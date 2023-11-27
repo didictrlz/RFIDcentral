@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1>Kits Ingresados</h1>
+
+    <h2>Cantidad de kits ingresados al laboratorio</h2>
+    <p>En esta sección se podrá encontrar la cantidad de kits ingresados al laboratorio en tiempo real</p>
+    <div id="datosAviones">
+        <!-- Aquí se mostrarán los datos de la segunda y tercera columna -->
+    </div>
+
+    <!-- Conectar con el servidor -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+    const socket = io.connect('http://localhost:8000');
+
+    socket.on('datosDesdeCSV', (data) => {
+        mostrarDatos(data);
+    });
+
+    function mostrarDatos(data) {
+        const datosAviones = document.getElementById('datosAviones');
+        datosAviones.innerHTML = ''; // Limpiar contenido anterior
+
+        data.forEach((dato) => {
+            const parrafo = document.createElement('p');
+            parrafo.textContent = `${dato.columna2}, ${dato.columna3}`;
+            datosAviones.appendChild(parrafo);
+        });
+    }
+    </script>
+</body>
+</html>
