@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Central de visualización RFID</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Central de visualización para sistema RFID</h1>
+
+    <h2>Contador de Aviones</h2>
+    <p>Cantidad de Aviones fabricados: <span id="contador">0</span></p>
+    <p>Cantidad de Aviones defectuosos: <span id="contadord">0</span></p>
+    <button type="submit" onclick="aumentarContador()">Defectuoso</button>
+
+    <!-- Conectar con index el servidor -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+    const socket = io.connect('http://localhost:3000');
+
+    //Contador de datos
+    let contador = 0;
+    let contadord = 0;
+    socket.on('datosDesdeCSV', (data) => {
+        contador = data.length; // Actualizar el contador con la longitud de los datos
+        const contadorElement = document.getElementById('contador');
+        contadorElement.textContent = contador;
+
+        if (contadord <= data.length) {
+            aumentarContador = () => {
+                if (contadord < contador) {
+                    contadord = contadord + 1;
+                    const contadorElement = document.getElementById('contadord');
+                    contadorElement.textContent = contadord;
+                    socket.emit('contadord', contadord);
+                }
+            }
+        }
+    });
+
+    
+    </script>
+</body>
+</html>
