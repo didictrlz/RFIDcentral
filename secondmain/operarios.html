@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<head>
+    <title>Central de visualización RFID</title>
+    <link rel="stylesheet" href="./style2.css"> 
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+
+    <h1>Portal de operarios</h1>
+
+    <!-- Formulario por cada estación -->
+    <!-- Para la Estación 1 -->
+    <h2>Operarios Estacion 1</h2>
+    <form id="formularioEstacion1">
+        <label for="nombreEstacion1">Ingrese el nombre:</label><br>
+        <input type="text" id="nombreEstacion1" name="nombreEstacion1"><br>
+
+        <label for="codigoEstacion1">Ingrese el código estudiantil:</label><br>
+        <input type="text" id="codigoEstacion1" name="codigoEstacion1"><br>
+
+        <button class="guardarBtn" data-estacion="Estación 1">Guardar</button>
+    </form>
+    <div></div>
+    <!-- Para la Estación 2 -->
+    <h2>Operarios Estacion 2</h2>
+    <form id="formularioEstacion2">
+        <label for="nombreEstacion2">Ingrese el nombre:</label><br>
+        <input type="text" id="nombreEstacion2" name="nombreEstacion2"><br>
+
+        <label for="codigoEstacion2">Ingrese el código estudiantil:</label><br>
+        <input type="text" id="codigoEstacion2" name="codigoEstacion2"><br>
+
+        <button class="guardarBtn" data-estacion="Estación 2">Guardar</button>
+    </form>
+    <div></div>
+    <!-- Para la Estación 3 -->
+    <h2>Operarios Estacion 3</h2>
+    <form id="formularioEstacion3">
+        <label for="nombreEstacion3">Ingrese el nombre:</label><br>
+        <input type="text" id="nombreEstacion3" name="nombreEstacion3"><br>
+
+        <label for="codigoEstacion3">Ingrese el código estudiantil:</label><br>
+        <input type="text" id="codigoEstacion3" name="codigoEstacion3"><br>
+
+        <button class="guardarBtn" data-estacion="Estación 3">Guardar</button>
+    </form>
+    <div></div>
+    <!-- Para la Estación 4 -->
+    <h2>Operarios Estacion 4</h2>
+    <form id="formularioEstacion4">
+        <label for="nombreEstacion4">Ingrese el nombre:</label><br>
+        <input type="text" id="nombreEstacion4" name="nombreEstacion4"><br>
+
+        <label for="codigoEstacion4">Ingrese el código estudiantil:</label><br>
+        <input type="text" id="codigoEstacion4" name="codigoEstacion4"><br>
+
+        <button class="guardarBtn" data-estacion="Estación 4">Guardar</button>
+    </form>
+    <div></div>
+    <!-- Para la Estación 5 -->
+    <h2>Operarios Estacion 5</h2>
+    <form id="formularioEstacion5">
+        <label for="nombreEstacion5">Ingrese el nombre:</label><br>
+        <input type="text" id="nombreEstacion5" name="nombreEstacion5"><br>
+
+        <label for="codigoEstacion5">Ingrese el código estudiantil:</label><br>
+        <input type="text" id="codigoEstacion5" name="codigoEstacion5"><br>
+
+        <button class="guardarBtn" data-estacion="Estación 5">Guardar</button>
+    </form>
+    <div></div>
+    <!-- Para la Estación 6 -->
+    <h2>Operarios Estacion 6</h2>
+    <form id="formularioEstacion6">
+        <label for="nombreEstacion6">Ingrese el nombre:</label><br>
+        <input type="text" id="nombreEstacion6" name="nombreEstacion6"><br>
+
+        <label for="codigoEstacion6">Ingrese el código estudiantil:</label><br>
+        <input type="text" id="codigoEstacion6" name="codigoEstacion6"><br>
+
+        <button class="guardarBtn" data-estacion="Estación 6">Guardar</button>
+    </form>
+
+
+    <script>
+        function limpiarCampo(nombreInput, codigoInput) {
+            document.getElementById(nombreInput).value = '';
+            document.getElementById(codigoInput).value = '';
+        }
+
+         // Evento de envío para Estación 1
+         const formEstacion1 = document.getElementById('formularioEstacion1');
+            formEstacion1.addEventListener('submit', function(event) {
+                event.preventDefault();
+            const formDataEstacion1 = new FormData(formEstacion1);
+            const estacion = formEstacion1.querySelector('.guardarBtn').getAttribute('data-estacion');
+            const xhrNombreEstacion1 = new XMLHttpRequest();
+
+            xhrNombreEstacion1.open('POST', `/nombreEstacion1`);
+            xhrNombreEstacion1.onreadystatechange = function() {
+                if (xhrNombreEstacion1.readyState === XMLHttpRequest.DONE) {
+                    if (xhrNombreEstacion1.status === 200) {
+                        console.log(JSON.parse(xhrNombreEstacion1.responseText).message);
+                        limpiarCampo(`nombreEstacion1`, `codigoEstacion1`);
+                    } else {
+                        console.error(`Error al enviar los datos del nombre a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrNombreEstacion1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrNombreEstacion1.send(new URLSearchParams(formDataEstacion1).toString());
+
+            const xhrCodigoEstacion1 = new XMLHttpRequest();
+            xhrCodigoEstacion1.open('POST', `/codigoEstacion1`);
+            xhrCodigoEstacion1.onreadystatechange = function() {
+                if (xhrCodigoEstacion1.readyState === XMLHttpRequest.DONE) {
+                    if (xhrCodigoEstacion1.status === 200) {
+                        console.log(JSON.parse(xhrCodigoEstacion1.responseText).message);
+                        limpiarCampo(`nombreEstacion1`, `codigoEstacion1`);
+                    } else {
+                        console.error(`Error al enviar los datos del código a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrCodigoEstacion1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrCodigoEstacion1.send(new URLSearchParams(formDataEstacion1).toString());
+        });
+
+        // Evento de envío para Estación 2
+        const formEstacion2 = document.getElementById('formularioEstacion2');
+            formEstacion2.addEventListener('submit', function(event) {
+                event.preventDefault();
+            const formDataEstacion2 = new FormData(formEstacion2);
+            const estacion = formEstacion2.querySelector('.guardarBtn').getAttribute('data-estacion');
+            const xhrNombreEstacion2 = new XMLHttpRequest();
+
+            xhrNombreEstacion2.open('POST', `/nombreEstacion2`);
+            xhrNombreEstacion2.onreadystatechange = function() {
+                if (xhrNombreEstacion2.readyState === XMLHttpRequest.DONE) {
+                    if (xhrNombreEstacion2.status === 200) {
+                        console.log(JSON.parse(xhrNombreEstacion2.responseText).message);
+                        limpiarCampo(`nombreEstacion2`, `codigoEstacion2`);
+                    } else {
+                        console.error(`Error al enviar los datos del nombre a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrNombreEstacion2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrNombreEstacion2.send(new URLSearchParams(formDataEstacion2).toString());
+
+            const xhrCodigoEstacion2 = new XMLHttpRequest();
+            xhrCodigoEstacion2.open('POST', `/codigoEstacion2`);
+            xhrCodigoEstacion2.onreadystatechange = function() {
+                if (xhrCodigoEstacion2.readyState === XMLHttpRequest.DONE) {
+                    if (xhrCodigoEstacion2.status === 200) {
+                        console.log(JSON.parse(xhrCodigoEstacion2.responseText).message);
+                        limpiarCampo(`nombreEstacion2`, `codigoEstacion2`);
+                    } else {
+                        console.error(`Error al enviar los datos del código a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrCodigoEstacion2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrCodigoEstacion2.send(new URLSearchParams(formDataEstacion2).toString());
+        });
+
+        // Evento de envío para Estación 3
+        const formEstacion3 = document.getElementById('formularioEstacion3');
+        formEstacion3.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formDataEstacion3 = new FormData(formEstacion3);
+            const estacion = formEstacion3.querySelector('.guardarBtn').getAttribute('data-estacion');
+            const xhrNombreEstacion3 = new XMLHttpRequest();
+
+            xhrNombreEstacion3.open('POST', `/nombreEstacion3`);
+            xhrNombreEstacion3.onreadystatechange = function() {
+                if (xhrNombreEstacion3.readyState === XMLHttpRequest.DONE) {
+                    if (xhrNombreEstacion3.status === 200) {
+                        console.log(JSON.parse(xhrNombreEstacion3.responseText).message);
+                        limpiarCampo(`nombreEstacion3`, `codigoEstacion3`);
+                    } else {
+                        console.error(`Error al enviar los datos del nombre a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrNombreEstacion3.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrNombreEstacion3.send(new URLSearchParams(formDataEstacion3).toString());
+
+            const xhrCodigoEstacion3 = new XMLHttpRequest();
+            xhrCodigoEstacion3.open('POST', `/codigoEstacion3`);
+            xhrCodigoEstacion3.onreadystatechange = function() {
+                if (xhrCodigoEstacion3.readyState === XMLHttpRequest.DONE) {
+                    if (xhrCodigoEstacion3.status === 200) {
+                        console.log(JSON.parse(xhrCodigoEstacion3.responseText).message);
+                        limpiarCampo(`nombreEstacion3`, `codigoEstacion3`);
+                    } else {
+                        console.error(`Error al enviar los datos del código a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrCodigoEstacion3.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrCodigoEstacion3.send(new URLSearchParams(formDataEstacion3).toString());
+        });
+
+        // Evento de envío para Estación 4
+        const formEstacion4 = document.getElementById('formularioEstacion4');
+        formEstacion4.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formDataEstacion4 = new FormData(formEstacion4);
+            const estacion = formEstacion4.querySelector('.guardarBtn').getAttribute('data-estacion');
+            const xhrNombreEstacion4 = new XMLHttpRequest();
+
+            xhrNombreEstacion4.open('POST', `/nombreEstacion4`);
+            xhrNombreEstacion4.onreadystatechange = function() {
+                if (xhrNombreEstacion4.readyState === XMLHttpRequest.DONE) {
+                    if (xhrNombreEstacion4.status === 200) {
+                        console.log(JSON.parse(xhrNombreEstacion4.responseText).message);
+                        limpiarCampo(`nombreEstacion4`, `codigoEstacion4`);
+                    } else {
+                        console.error(`Error al enviar los datos del nombre a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrNombreEstacion4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrNombreEstacion4.send(new URLSearchParams(formDataEstacion4).toString());
+
+            const xhrCodigoEstacion4 = new XMLHttpRequest();
+            xhrCodigoEstacion4.open('POST', `/codigoEstacion4`);
+            xhrCodigoEstacion4.onreadystatechange = function() {
+                if (xhrCodigoEstacion4.readyState === XMLHttpRequest.DONE) {
+                    if (xhrCodigoEstacion4.status === 200) {
+                        console.log(JSON.parse(xhrCodigoEstacion4.responseText).message);
+                        limpiarCampo(`nombreEstacion4`, `codigoEstacion4`);
+                    } else {
+                        console.error(`Error al enviar los datos del código a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrCodigoEstacion4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrCodigoEstacion4.send(new URLSearchParams(formDataEstacion4).toString());
+        });
+
+        // Evento de envío para Estación 5
+        const formEstacion5 = document.getElementById('formularioEstacion5');
+        formEstacion5.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formDataEstacion5 = new FormData(formEstacion5);
+            const estacion = formEstacion5.querySelector('.guardarBtn').getAttribute('data-estacion');
+            const xhrNombreEstacion5 = new XMLHttpRequest();
+
+            xhrNombreEstacion5.open('POST', `/nombreEstacion5`);
+            xhrNombreEstacion5.onreadystatechange = function() {
+                if (xhrNombreEstacion5.readyState === XMLHttpRequest.DONE) {
+                    if (xhrNombreEstacion5.status === 200) {
+                        console.log(JSON.parse(xhrNombreEstacion5.responseText).message);
+                        limpiarCampo(`nombreEstacion5`, `codigoEstacion5`);
+                    } else {
+                        console.error(`Error al enviar los datos del nombre a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrNombreEstacion5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrNombreEstacion5.send(new URLSearchParams(formDataEstacion5).toString());
+
+            const xhrCodigoEstacion5 = new XMLHttpRequest();
+            xhrCodigoEstacion5.open('POST', `/codigoEstacion5`);
+            xhrCodigoEstacion5.onreadystatechange = function() {
+                if (xhrCodigoEstacion5.readyState === XMLHttpRequest.DONE) {
+                    if (xhrCodigoEstacion5.status === 200) {
+                        console.log(JSON.parse(xhrCodigoEstacion5.responseText).message);
+                        limpiarCampo(`nombreEstacion5`, `codigoEstacion5`);
+                    } else {
+                        console.error(`Error al enviar los datos del código a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrCodigoEstacion5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrCodigoEstacion5.send(new URLSearchParams(formDataEstacion5).toString());
+        });
+
+        // Evento de envío para Estación 6
+        const formEstacion6 = document.getElementById('formularioEstacion6');
+        formEstacion6.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formDataEstacion6 = new FormData(formEstacion6);
+            const estacion = formEstacion6.querySelector('.guardarBtn').getAttribute('data-estacion');
+            const xhrNombreEstacion6 = new XMLHttpRequest();
+
+            xhrNombreEstacion6.open('POST', `/nombreEstacion6`);
+            xhrNombreEstacion6.onreadystatechange = function() {
+                if (xhrNombreEstacion6.readyState === XMLHttpRequest.DONE) {
+                    if (xhrNombreEstacion6.status === 200) {
+                        console.log(JSON.parse(xhrNombreEstacion6.responseText).message);
+                        limpiarCampo(`nombreEstacion6`, `codigoEstacion6`);
+                    } else {
+                        console.error(`Error al enviar los datos del nombre a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrNombreEstacion6.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrNombreEstacion6.send(new URLSearchParams(formDataEstacion6).toString());
+
+            const xhrCodigoEstacion6 = new XMLHttpRequest();
+            xhrCodigoEstacion6.open('POST', `/codigoEstacion6`);
+            xhrCodigoEstacion6.onreadystatechange = function() {
+                if (xhrCodigoEstacion6.readyState === XMLHttpRequest.DONE) {
+                    if (xhrCodigoEstacion6.status === 200) {
+                        console.log(JSON.parse(xhrCodigoEstacion6.responseText).message);
+                        limpiarCampo(`nombreEstacion6`, `codigoEstacion6`);
+                    } else {
+                        console.error(`Error al enviar los datos del código a la ${estacion}.`);
+                    }
+                }
+            };
+            xhrCodigoEstacion6.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhrCodigoEstacion6.send(new URLSearchParams(formDataEstacion6).toString());
+        });
+    </script>
+
+    <!-- Dentro del script en tu archivo HTML -->
+    <button id="redirigirBoton">Siguiente</button>
+
+    <script>
+        // Función para manejar la redirección
+        function redirigirAPagina() {
+            // Reemplaza 'URL_DE_TU_PAGINA' con la URL a la que deseas redirigir
+            window.location.href = '/portales';
+        }
+
+        // Agrega un evento de clic al botón
+        document.getElementById('redirigirBoton').addEventListener('click', redirigirAPagina);
+    </script>
+    
+
+   
+
+
+
+
+</body>
+</html>

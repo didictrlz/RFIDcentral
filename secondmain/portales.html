@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1>Kits Ingresados</h1>
+
+    <h2>Cantidad de kits ingresados al laboratorio</h2>
+    <p>En esta sección se podrá encontrar la cantidad de kits ingresados al laboratorio en tiempo real</p>
+    <div id="datosDesdeCSV2"></div>
+
+        <script>
+            const eventSource = new EventSource('http://localhost:5000');
+        
+            eventSource.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            mostrarDatos(data);
+            };
+        
+            function mostrarDatos(data) {
+            const datosDiv = document.getElementById('datosDesdeCSV2');
+            datosDiv.innerHTML = ''; // Limpiar contenido anterior
+        
+            data.forEach((dato) => {
+                const parrafo = document.createElement('p');
+                parrafo.textContent = `Columna1: ${dato.columna1}, Columna2: ${dato.columna2}, Columna3: ${dato.columna3}`;
+                datosDiv.appendChild(parrafo);
+            });
+            }
+        
+            eventSource.onerror = function (error) {
+            console.error('Error en la conexión de EventSource:', error);
+            eventSource.close();  // Cerrar la conexión en caso de error
+            };
+        </script>
+
+
+    <!-- Contenedor para los datos de /picking -->
+    <div id="datosPicking">
+        <!-- Aquí se mostrarán los datos de /picking -->
+    </div>
+
+    <!-- Script para obtener y mostrar datos de /picking -->
+    <script>
+        // Llamada a la función cuando se carga la página
+        document.addEventListener("DOMContentLoaded", obtenerDatosPicking);
+
+        async function obtenerDatosPicking() {
+            try {
+                // Obtener los datos de /picking mediante fetch
+                const response = await fetch('/picking');
+                const data = await response.text();
+
+                // Insertar los datos en el contenedor
+                document.getElementById('datosPicking').innerHTML = data;
+            } catch (error) {
+                console.error('Error al obtener los datos de picking:', error);
+            }
+        }
+    </script>
+
+</body>
+</html>

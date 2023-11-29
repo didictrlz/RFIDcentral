@@ -1,0 +1,80 @@
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Estilos generales */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    font-size: larger;
+    background-color: #f0f0f0;
+  }
+  
+  header {
+    background-color: #091c3f;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+  }
+  
+  h1, h2 {
+    color: #6495ed;
+    margin-top: 20px;
+  }
+  
+  form {
+    width: 300px;
+    margin: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #6495ed;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #4169e1;
+  }
+  
+  div {
+    height: 20px; /* Espacio entre formularios */
+  }
+  
+  /* Estilos específicos para secciones */
+  section {
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+  
+  .show {
+    display: block;
+  }
+  

@@ -1,0 +1,59 @@
+<!-- resumen.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Operarios</title>
+</head>
+<body>
+
+    <h1>Resumen de Operarios</h1>
+
+    <!-- Aquí se mostrará el resumen -->
+    <div id="resumenContainer"></div>
+
+    <!-- Conectar con el servidor -->
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    // Manejar eventos de los operarios
+    socket.on('nuevoOperario', (data) => {
+        // Actualizar el resumen con los nuevos datos
+        actualizarResumen(data);
+    });
+
+    function actualizarResumen(data) {
+        const resumenContainer = document.getElementById('resumenContainer');
+        
+        // Crear un nuevo elemento para mostrar los datos del operario
+        const nuevoOperarioDiv = document.createElement('div');
+        nuevoOperarioDiv.innerHTML = `<p><strong>${data.estacion}:</strong> ${data.nombre} - ${data.codigo}</p>`;
+
+        // Agregar el nuevo elemento al contenedor del resumen
+        resumenContainer.appendChild(nuevoOperarioDiv);
+    }
+</script>
+
+    <script>
+
+        // Manejar eventos de los operarios
+        socket.on('nuevoOperario', (data) => {
+            // Actualizar el resumen con los nuevos datos
+            actualizarResumen(data);
+        });
+
+        function actualizarResumen(data) {
+            const resumenContainer = document.getElementById('resumenContainer');
+            
+            // Crear un nuevo elemento para mostrar los datos del operario
+            const nuevoOperarioDiv = document.createElement('div');
+            nuevoOperarioDiv.innerHTML = `<p><strong>${data.estacion}:</strong> ${data.nombre} - ${data.codigo}</p>`;
+
+            // Agregar el nuevo elemento al contenedor del resumen
+            resumenContainer.appendChild(nuevoOperarioDiv);
+        }
+    </script>
+
+</body>
+</html>
